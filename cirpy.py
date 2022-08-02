@@ -93,7 +93,9 @@ def request(input, representation, resolvers=None, get3d=False, tautomers=False,
     url = construct_api_url(input, representation, resolvers, get3d, tautomers, **kwargs)
     log.debug('Making request: %s', url)
     response = urlopen(url)
-    return etree.parse(response).getroot()
+    result = etree.parse(response).getroot()
+    response.close()
+    return result
 
 
 class Result(object):
@@ -248,7 +250,9 @@ def resolve_image(input, resolvers=None, fmt='png', width=300, height=300, frame
     url = construct_api_url(**kwargs)
     log.debug('Making image request: %s', url)
     response = urlopen(url)
-    return response.read()
+    result = response.read()
+    response.close()
+    return result
 
 
 # TODO: Support twirl as fmt paramter?
